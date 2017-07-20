@@ -1,5 +1,3 @@
-#------------Only 25% beat-------------#
-
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
@@ -13,37 +11,41 @@ class Solution(object):
         :type l2: ListNode
         :rtype: ListNode
         """
-        str1 = "";
-        str2 = "";
-        nl1 = l1;
-        nl2 = l2;
-        while(nl1.next != None):
-            str1+=str(nl1.val);
-            nl1 = nl1.next;
-        str1+=str(nl1.val);
-        str1r="".join(reversed(str1));
         
-        while(nl2.next != None):
-            str2+=str(nl2.val);
-            nl2 = nl2.next;
-        str2+=str(nl2.val);
-        str2r="".join(reversed(str2));
+        absum =0;
+        i=0;
+      
         
-        temp = int(str1r) + int(str2r);
-        strsum = list("".join(reversed(str(temp))));
-
+        while(l1 and l2):
+            absum += l1.val * (10**i) + l2.val * (10**i);
+            i=i+1;
+            l1 = l1.next;
+            l2 = l2.next;
+        if(l1!=None):
+            while(l1):
+                absum += l1.val * (10**i);
+                l1 = l1.next;
+                i=i+1;
+        elif(l2!=None):
+            while(l2):
+                absum += l2.val * (10**i);
+                l2 = l2.next;
+                i=i+1; 
+                
         
-        Head = ListNode(int(strsum[0]));
-        if(len(strsum)==1):
+        Head = ListNode(absum%10);
+        if(absum < 10):
             return Head;
         
-        Head.next = ListNode(None);
-        Node = Head;
-        for i in range(len(strsum)):
-            Node.val = int(strsum[i]);
-            if(i != len(strsum)-1):
-                Node.next = ListNode(None);
-         
-            Node = Node.next
+        Head.next = ListNode(0);
+        Node = Head.next;
+        absum = absum/10;
+        while (absum > 0):
+            Node.val = absum%10;
+            if(absum > 9):
+                Node.next = ListNode(0);
+            absum = absum/10;
+            Node = Node.next;
+
   
         return Head;
